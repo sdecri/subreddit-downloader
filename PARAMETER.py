@@ -1,16 +1,8 @@
-from datetime import datetime, timedelta, timezone
-
-CLEAN_DB=True
-DROP_TABLE=True
 DB_HOST="127.0.0.1"
 DB_PORT="3306"
 DB_NAME="reddit"
 DB_USER="root"
 DB_PASSWORD=None
-TYPE = None
-FILE_PATH = None
-CHUNK_SIZE = 1000
-TABLE_PREFIX = "traj_"
 
 REDDIT_CLIENT_ID=None
 REDDIT_USERNAME=None

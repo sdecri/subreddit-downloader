@@ -4,7 +4,7 @@ import getopt
 import sys
 
 # INIT LOG <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-import dateutil
+import dateutil.parser
 
 import PARAMETER
 import downloader
@@ -130,22 +130,22 @@ def __help():
         , get_long_option(ParameterName.REDDIT_SECRET.value) + ":          [REQUIRED] Reddit secret."
 
         , get_long_option(ParameterName.DB_HOST.value) + ":          Database host. Default " + PARAMETER.DB_HOST
-        , get_long_option(ParameterName.DB_PORT.value) + ":          Database port. Default " + PARAMETER.DB_PORT
+        , get_long_option(ParameterName.DB_PORT.value) + ":          Database port. Default " + str(PARAMETER.DB_PORT)
         , get_long_option(ParameterName.DB_NAME.value) + ":          Database name. Default " + PARAMETER.DB_NAME
         , get_long_option(ParameterName.DB_USER.value) + ":          Database user. Default " + PARAMETER.DB_USER
         , get_long_option(ParameterName.DB_PASSWORD.value) + ":      Database password."
 
         , get_long_option(
-            ParameterName.SUBMISSIONS_BATCH_SIZE.value) + ":  Number of submissions to download in batch each time. Default: " + PARAMETER.SUBMISSIONS_BATCH_SIZE
+            ParameterName.SUBMISSIONS_BATCH_SIZE.value) + ":  Number of submissions to download in batch each time. Default: " + str(PARAMETER.SUBMISSIONS_BATCH_SIZE)
         , get_long_option(
-            ParameterName.COMMENTS_PERSIST_BATCH_SIZE.value) + ":  Number of comments to persist in batch. Default: " + PARAMETER.COMMENTS_PERSIST_BATCH_SIZE
+            ParameterName.COMMENTS_PERSIST_BATCH_SIZE.value) + ":  Number of comments to persist in batch. Default: " + str(PARAMETER.COMMENTS_PERSIST_BATCH_SIZE)
 
         , get_long_option(
-            ParameterName.NUM_ITERATIONS.value) + ":  Number of iterations to download submissions in batch. Negative number means no limit. Default: " + PARAMETER.NUM_ITERATIONS
+            ParameterName.NUM_ITERATIONS.value) + ":  Number of iterations to download submissions in batch. Negative number means no limit. Default: " + str(PARAMETER.NUM_ITERATIONS)
         , get_long_option(
-            ParameterName.FROM_DATE.value) + ":          Download only submissions created after this date in ISO-8601 . Default: ." + PARAMETER.FROM_DATE
+            ParameterName.FROM_DATE.value) + ":          Download only submissions created after this date in ISO-8601."
         , get_long_option(
-            ParameterName.TO_DATE.value) + ":          Download only submissions created before this date in ISO-8601 . Default: ." + PARAMETER.TO_DATE
+            ParameterName.TO_DATE.value) + ":          Download only submissions created before this date in ISO-8601."
         , os.linesep
     ])
 
