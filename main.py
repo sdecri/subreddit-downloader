@@ -1,13 +1,11 @@
 __author__ = 'simone.decristofaro'
 
-import sys
 import getopt
-import os
+import inspect
 import logging
+import os
+import sys
 from logging import config
-
-import time, math, inspect
-import praw
 
 # INIT LOG <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 import PARAMETER
@@ -53,14 +51,6 @@ def parse_command_line(argv):
             , get_option_declaration(PARAMETER_REDDIT_USERNAME)
             , get_option_declaration(PARAMETER_REDDIT_CLIENT_ID)
             , get_option_declaration(PARAMETER_REDDIT_SECRET)
-            # , "chunk-size="
-            # , "table-prefix="
-            # , "dbhost="
-            # , "dbport="
-            # , "dbname="
-            # , "dbuser="
-            # , "dbpassword="
-            # , "drop-table="
         ])
     except getopt.GetoptError:
         log.exception("ERROR parsing command line arguments")
@@ -75,20 +65,6 @@ def parse_command_line(argv):
             PARAMETER.REDDIT_CLIENT_ID = arg
         elif opt == get_long_option(PARAMETER_REDDIT_SECRET):
             PARAMETER.REDDIT_SECRET = arg
-        # elif opt == "--table-prefix":
-        #     PARAMETER.TABLE_PREFIX = arg
-        # elif opt == "--dbhost":
-        #     PARAMETER.DB_HOST = arg
-        # elif opt == "--dbport":
-        #     PARAMETER.DB_PORT = arg
-        # elif opt == "--dbname":
-        #     PARAMETER.DB_NAME = arg
-        # elif opt == "--dbuser":
-        #     PARAMETER.DB_USER = arg
-        # elif opt == "--dbpassword":
-        #     PARAMETER.DB_PASSWORD = arg
-        # elif opt == "--drop-table":
-        #     PARAMETER.DROP_TABLE = arg == 'y'
 
     # check type value
     check_existence_required_parameter(PARAMETER_REDDIT_USERNAME, PARAMETER.REDDIT_USERNAME)
@@ -99,22 +75,6 @@ def parse_command_line(argv):
     # appType = OUTPUT.getOutPutTypeByName(PARAMETER.TYPE)
 
     log.info("Start downloading subreddit")
-
-    # log_console.info(os.linesep.join([
-    #     os.linesep
-    #     , "----------- configuration -----------: "
-    #     , "parameters values: "
-    #     , "--file-path:            csv file containing trajectories = " + PARAMETER.FILE_PATH
-    #     , "--chunk-size:           size of the chunk to export = " + str(PARAMETER.CHUNK_SIZE)
-    #     , "--table-prefix:         table prefix = " + PARAMETER.TABLE_PREFIX
-    #     , "--dbhost:               database host = " + PARAMETER.DB_HOST
-    #     , "--dbport:               database port = " + PARAMETER.DB_PORT
-    #     , "--dbname:               database name = " + PARAMETER.DB_NAME
-    #     , "--dbuser:               database user = " + PARAMETER.DB_USER
-    #     , "--dbpassword:           database password = " + PARAMETER.DB_PASSWORD
-    #     , "--drop-table:           drop tables = " + ('y' if PARAMETER.DROP_TABLE else 'n')
-    #
-    # ]))
 
 
 def __help():
