@@ -1,22 +1,12 @@
 __author__ = 'simone.decristofaro'
 
 import getopt
-import inspect
-import logging
-import os
 import sys
-from logging import config
 
 # INIT LOG <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 import PARAMETER
-
-SCRIPT_DIRECTORY = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-LOGGING_CONFIG_FILE_PATH = os.path.realpath(os.path.join(SCRIPT_DIRECTORY, "logging.conf"))
-logging.config.fileConfig(LOGGING_CONFIG_FILE_PATH)
-
-# logging.basicConfig()
-log_console = logging.getLogger('onlyconsole')
-log = logging.getLogger()
+import downloader
+from logger_manager import *
 
 PARAMETER_REDDIT_CLIENT_ID = "reddit_client_id"
 PARAMETER_REDDIT_USERNAME = "reddit_username"
@@ -40,7 +30,8 @@ def check_existence_required_parameter(parameter_name, parameter_value):
 
 def main(argv):
     parse_command_line(argv)
-    log.info("Start downloading subreddit")
+    downloader.download()
+
 
 
 def parse_command_line(argv):
