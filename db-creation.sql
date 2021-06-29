@@ -8,8 +8,7 @@ CREATE TABLE subreddit (
   name varchar(255),
   display_name varchar(255),
   title varchar(255),
-  created_utc timestamp,
-  description text,
+  created_utc bigint,
   PRIMARY KEY (id)
 );
 
@@ -17,11 +16,11 @@ drop table if exists submission;
 CREATE TABLE submission (
   id varchar(255),
   subreddit varchar(255),
-  title varchar(255),
-  created_utc timestamp,
+  created_utc bigint,
+  score int,
+  title varchar(255),  
   num_comments int,
   permalink varchar(255),
-  score int,
   url varchar(255),
   PRIMARY KEY (id),
   FOREIGN KEY (subreddit) REFERENCES subreddit(id)
@@ -31,15 +30,12 @@ drop table if exists comment;
 CREATE TABLE comment (
   id varchar(255),
   submission varchar(255),
-  created_utc timestamp,
+  created_utc bigint,
+  score int,
   body text,
   permalink varchar(255),
-  score int,
   PRIMARY KEY (id),
   FOREIGN KEY (submission) REFERENCES submission(id)
 );
 
--- INSERT INTO reddit.subreddit
--- (id, name, display_name, title, created_utc, description)
--- VALUES('sub', 'sanfrancisco', 'sanfrancisco', 'sanfrancisco', FROM_UNIXTIME(1624987491), 'desc');
 

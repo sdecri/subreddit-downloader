@@ -21,7 +21,13 @@ class ParameterName(Enum):
     FROM_DATE = 'from_date'
     TO_DATE = 'to_date'
     SUBMISSIONS_BATCH_SIZE = 'submissions_batch_size'
+    COMMENTS_PERSIST_BATCH_SIZE = "comments_persist_batch_size"
     NUM_ITERATIONS = 'num_iterations'
+    DB_USER = 'db_user'
+    DB_PASSWORD = 'db_password'
+    DB_NAME = 'db_name'
+    DB_HOST = 'db_host'
+    DB_PORT = 'db_port'
 
 
 def get_long_option(parameter_name):
@@ -53,7 +59,13 @@ def parse_command_line(argv):
             , get_option_declaration(ParameterName.REDDIT_CLIENT_ID.value)
             , get_option_declaration(ParameterName.REDDIT_SECRET.value)
             , get_option_declaration(ParameterName.SUBREDDIT.value)
+            , get_option_declaration(ParameterName.DB_PASSWORD.value)
+            , get_option_declaration(ParameterName.DB_USER.value)
+            , get_option_declaration(ParameterName.DB_HOST.value)
+            , get_option_declaration(ParameterName.DB_PORT.value)
+            , get_option_declaration(ParameterName.DB_NAME.value)
             , get_option_declaration(ParameterName.SUBMISSIONS_BATCH_SIZE.value)
+            , get_option_declaration(ParameterName.COMMENTS_PERSIST_BATCH_SIZE.value)
             , get_option_declaration(ParameterName.NUM_ITERATIONS.value)
             , get_option_declaration(ParameterName.FROM_DATE.value)
             , get_option_declaration(ParameterName.TO_DATE.value)
@@ -75,8 +87,24 @@ def parse_command_line(argv):
             PARAMETER.SUBREDDIT = arg
         elif opt == get_long_option(ParameterName.SUBMISSIONS_BATCH_SIZE.value):
             PARAMETER.SUBMISSIONS_BATCH_SIZE = int(arg)
+        elif opt == get_long_option(ParameterName.COMMENTS_PERSIST_BATCH_SIZE.value):
+            PARAMETER.COMMENTS_PERSIST_BATCH_SIZE = int(arg)
         elif opt == get_long_option(ParameterName.NUM_ITERATIONS.value):
             PARAMETER.NUM_ITERATIONS = int(arg)
+
+        elif opt == get_long_option(ParameterName.DB_HOST.value):
+            PARAMETER.DB_HOST = arg
+        elif opt == get_long_option(ParameterName.DB_PORT.value):
+            PARAMETER.DB_PORT = int(arg)
+        elif opt == get_long_option(ParameterName.DB_NAME.value):
+            PARAMETER.DB_NAME = arg
+        elif opt == get_long_option(ParameterName.DB_USER.value):
+            PARAMETER.DB_USER = arg
+        elif opt == get_long_option(ParameterName.DB_PASSWORD.value):
+            PARAMETER.DB_PASSWORD = arg
+        elif opt == get_long_option(ParameterName.DB_HOST.value):
+            PARAMETER.DB_HOST = arg
+
         elif opt == get_long_option(ParameterName.FROM_DATE.value):
             PARAMETER.FROM_DATE = dateutil.parser.parse(arg)
         elif opt == get_long_option(ParameterName.TO_DATE.value):
@@ -87,9 +115,6 @@ def parse_command_line(argv):
     check_existence_required_parameter(ParameterName.REDDIT_CLIENT_ID.value, PARAMETER.REDDIT_CLIENT_ID)
     check_existence_required_parameter(ParameterName.REDDIT_SECRET.value, PARAMETER.REDDIT_SECRET)
     check_existence_required_parameter(ParameterName.SUBREDDIT.value, PARAMETER.SUBREDDIT)
-
-    # global appType
-    # appType = OUTPUT.getOutPutTypeByName(PARAMETER.TYPE)
 
 
 def __help():
@@ -103,8 +128,18 @@ def __help():
         , get_long_option(ParameterName.REDDIT_USERNAME.value) + ":          [REQUIRED] Reddit username."
         , get_long_option(ParameterName.REDDIT_CLIENT_ID.value) + ":          [REQUIRED] Reddit client id."
         , get_long_option(ParameterName.REDDIT_SECRET.value) + ":          [REQUIRED] Reddit secret."
+
+        , get_long_option(ParameterName.DB_HOST.value) + ":          Database host. Default " + PARAMETER.DB_HOST
+        , get_long_option(ParameterName.DB_PORT.value) + ":          Database port. Default " + PARAMETER.DB_PORT
+        , get_long_option(ParameterName.DB_NAME.value) + ":          Database name. Default " + PARAMETER.DB_NAME
+        , get_long_option(ParameterName.DB_USER.value) + ":          Database user. Default " + PARAMETER.DB_USER
+        , get_long_option(ParameterName.DB_PASSWORD.value) + ":      Database password."
+
         , get_long_option(
             ParameterName.SUBMISSIONS_BATCH_SIZE.value) + ":  Number of submissions to download in batch each time. Default: " + PARAMETER.SUBMISSIONS_BATCH_SIZE
+        , get_long_option(
+            ParameterName.COMMENTS_PERSIST_BATCH_SIZE.value) + ":  Number of comments to persist in batch. Default: " + PARAMETER.COMMENTS_PERSIST_BATCH_SIZE
+
         , get_long_option(
             ParameterName.NUM_ITERATIONS.value) + ":  Number of iterations to download submissions in batch. Negative number means no limit. Default: " + PARAMETER.NUM_ITERATIONS
         , get_long_option(
