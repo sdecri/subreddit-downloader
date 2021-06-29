@@ -83,17 +83,11 @@ def __help():
     """
     return os.linesep.join([
         os.linesep
-        , "----------- trajectories-to-db configuration -----------: "
+        , "----------- configuration -----------: "
         , "-h, --help:               usage"
-        , "-f, --file-path:          [REQUIRED] csv file containing trajectories."
-        , "--chunk-size:             size of the chunk to export = " + str(PARAMETER.CHUNK_SIZE)
-        , "--table-prefix:           table prefix, default = " + PARAMETER.TABLE_PREFIX
-        , "--dbhost:                 database host, default = " + PARAMETER.DB_HOST
-        , "--dbport:                 database port, default = " + PARAMETER.DB_PORT
-        , "--dbname:                 database name, default = " + PARAMETER.DB_NAME
-        , "--dbuser:                 database user, default = " + PARAMETER.DB_USER
-        , "--dbpassword:             database password, default = " + PARAMETER.DB_PASSWORD
-        , "--drop-table:             drop tables = " + ('y' if PARAMETER.DROP_TABLE else 'n')
+        , get_long_option(PARAMETER_REDDIT_USERNAME) + ":          [REQUIRED] reddit username."
+        , get_long_option(PARAMETER_REDDIT_CLIENT_ID) + ":          [REQUIRED] reddit client id."
+        , get_long_option(PARAMETER_REDDIT_SECRET) + ":          [REQUIRED] reddit secret."
         , os.linesep
     ])
 
