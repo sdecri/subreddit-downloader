@@ -1,0 +1,11 @@
+CLEAN_DB=True
+DROP_TABLE=True
+DB_HOST="127.0.0.1"
+DB_PORT="5432"
+DB_NAME="mdf"
+DB_USER="postgres"
+DB_PASSWORD="postgres"
+TYPE = None
+FILE_PATH = None
+CHUNK_SIZE = 1000
+TABLE_PREFIX = "traj_"
