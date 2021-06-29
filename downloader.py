@@ -1,3 +1,5 @@
+import sys
+
 import praw
 from psaw import PushshiftAPI
 from logger_manager import *
@@ -11,16 +13,12 @@ def create_user_agent(reddit_client_id, reddit_username):
 
 
 def init_reddit_client():
+
     reddit = praw.Reddit(
         client_id=PARAMETER.REDDIT_CLIENT_ID,
         client_secret=PARAMETER.REDDIT_SECRET,
         user_agent=create_user_agent(PARAMETER.REDDIT_CLIENT_ID, PARAMETER.REDDIT_SECRET),
     )
-
-    subreddit = reddit.subreddit(PARAMETER.SUBREDDIT)
-
-    log.info('Subreddit display name: {}'.format(subreddit.display_name))
-    log.info('Subreddit title: {}'.format(subreddit.title))
 
     return reddit
 
@@ -43,6 +41,7 @@ def download_submissions(pushshift_client, reddit_client, start_epoch, end_epoch
 
     last_submission = None
     num_downloaded_submissions = 0
+    num_downloaded_comments = 0
     for sub in sub_generator:
         submission_info = {
             "id": sub.id,
@@ -58,28 +57,47 @@ def download_submissions(pushshift_client, reddit_client, start_epoch, end_epoch
 
         submission = reddit_client.submission(id=sub.id)
         if submission is not None:
-            log.info(">>> Downloading {} commments from submission {}".format(submission.num_comments, sub.id))
-            submission.comments.replace_more(limit=None)
-            for comment in submission.comments.list():
-                comment_info = {
-                    "id": comment.id,
-                    "body": comment.body,
-                    "created_utc": int(comment.created_utc),
-                    "permalink": comment.permalink,
-                    "score": comment.score
-                }
-                if log.isEnabledFor(logging.DEBUG):
-                    log.debug(">>> Comment info: {}".format(comment_info))
-
+            num_comments = download_comments(sub, submission)
+            num_downloaded_comments = num_downloaded_comments + num_comments
 
         last_submission = sub
 
+    return last_submission, num_downloaded_submissions, num_downloaded_comments
 
-    return last_submission, num_downloaded_submissions
+
+def download_comments(sub, submission):
+    log.info(">>> Downloading {} commments from submission {}".format(submission.num_comments, sub.id))
+    submission.comments.replace_more(limit=None)
+    num_downloaded_comments = 0
+    for comment in submission.comments.list():
+        num_downloaded_comments = num_downloaded_comments + 1
+        comment_info = {
+            "id": comment.id,
+            "body": comment.body,
+            "created_utc": int(comment.created_utc),
+            "permalink": comment.permalink,
+            "score": comment.score
+        }
+        if log.isEnabledFor(logging.DEBUG):
+            log.debug(">>> Comment info: {}".format(comment_info))
+
+    return num_downloaded_comments
+
 
 def download():
     reddit_client = init_reddit_client()
     pushshift_client = init_pushshift_client(reddit_client)
+
+    subreddit = reddit_client.subreddit(PARAMETER.SUBREDDIT)
+    subreddit_info={
+        "id": subreddit.id,
+        "name": subreddit.name,
+        "display_name": subreddit.display_name,
+        "title": subreddit.title,
+        "created_utc": subreddit.created_utc,
+        "description": subreddit.description,
+    }
+    log.info(subreddit_info)
 
     start = PARAMETER.FROM_DATE
     end = PARAMETER.TO_DATE
@@ -102,10 +120,11 @@ def download():
 
     step_counter = 1
     num_downloaded_submissions = 0
+    num_downloaded_comments = 0
     while not no_more_data and (num_iterations < 0 or step_counter <= num_iterations):
 
         log.info("> Step {}: from_timestamp: {}, to_timestamp: {}".format(step_counter, start_epoch, end_epoch))
-        last_submission, num_submissions = download_submissions(pushshift_client, reddit_client, start_epoch, end_epoch)
+        last_submission, num_submissions, num_downloaded_comments = download_submissions(pushshift_client, reddit_client, start_epoch, end_epoch)
         num_downloaded_submissions = num_downloaded_submissions + num_submissions
 
         step_counter = step_counter + 1
@@ -115,4 +134,5 @@ def download():
             start_epoch = int(last_submission.created_utc)
 
     log.info("Downloaded {} submissions".format(num_downloaded_submissions))
+    log.info("Downloaded {} comments".format(num_downloaded_comments))
     log.info('finished downloading')

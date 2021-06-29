@@ -11,5 +11,3 @@ logging.config.fileConfig(LOGGING_CONFIG_FILE_PATH)
 log_console = logging.getLogger('onlyconsole')
 log = logging.getLogger()
 
-log.info('log configured')
-
