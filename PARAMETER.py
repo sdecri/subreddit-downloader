@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta, timezone
+
 CLEAN_DB=True
 DROP_TABLE=True
 DB_HOST="127.0.0.1"
@@ -13,3 +15,8 @@ TABLE_PREFIX = "traj_"
 REDDIT_CLIENT_ID=None
 REDDIT_USERNAME=None
 REDDIT_SECRET=None
+SUBREDDIT=None
+FROM_DATE=None
+TO_DATE=None
+SUBMISSIONS_BATCH_SIZE=5
+NUM_ITERATIONS=-1
