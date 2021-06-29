@@ -40,7 +40,7 @@ def check_existence_required_parameter(parameter_name, parameter_value):
 
 def main(argv):
     parse_command_line(argv)
-    log_console.debug("Start trajectory persisting process")
+    log.info("Start downloading subreddit")
 
 
 def parse_command_line(argv):
@@ -73,8 +73,6 @@ def parse_command_line(argv):
 
     # global appType
     # appType = OUTPUT.getOutPutTypeByName(PARAMETER.TYPE)
-
-    log.info("Start downloading subreddit")
 
 
 def __help():
