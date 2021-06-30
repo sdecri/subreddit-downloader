@@ -32,7 +32,7 @@ def persist_single_row(connection, table, info):
     cursor = None
     try:
         cursor = connection.cursor()
-        values = ', '.join("'" + str(x) + "'" for x in info.values())
+        values = ', '.join("'" + str(x).replace("'", "\\'") + "'" for x in info.values())
         sql = "INSERT INTO %s VALUES (%s)" % (table, values)
         if log.isEnabledFor(logging.DEBUG):
             log.debug("Executing sql: {}".format(sql))
@@ -51,8 +51,8 @@ def download_submissions(subreddit_id, pushshift_client, reddit_client, connecti
         after=start_epoch,
         before=end_epoch,
         limit=PARAMETER.SUBMISSIONS_BATCH_SIZE,
-        num_comments=">0"
     )
+    # num_comments=">0"
 
     last_submission = None
     num_downloaded_submissions = 0
@@ -95,7 +95,7 @@ def download_comments(sub, submission, connection):
             "submission": sub.id,
             "created_utc": int(comment.created_utc),
             "score": comment.score,
-            "body": comment.body,
+            "body": comment.body.replace("'", "\\'"),
             "permalink": comment.permalink,
         }
 
